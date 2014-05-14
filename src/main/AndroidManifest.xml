@@ -16,9 +16,7 @@
      limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.ex.photo"
-    android:versionCode="1">
+    package="com.android.ex.photo">
 
-    <uses-sdk
-        android:targetSdkVersion="19" android:minSdkVersion="8"/>
+    <application/>
 </manifest>
