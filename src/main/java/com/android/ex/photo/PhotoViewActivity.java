@@ -17,36 +17,38 @@
 
 package com.android.ex.photo;
 
-import android.app.ActionBar;
-import android.app.ActionBar.OnMenuVisibilityListener;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.MenuItem;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBar.OnMenuVisibilityListener;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
 
 import com.android.ex.photo.PhotoViewPager.InterceptType;
@@ -66,7 +68,7 @@ import java.util.Set;
 /**
  * Activity to view the contents of an album.
  */
-public class PhotoViewActivity extends FragmentActivity implements
+public class PhotoViewActivity extends ActionBarActivity implements
         LoaderManager.LoaderCallbacks<Cursor>, OnPageChangeListener, OnInterceptTouchListener,
         OnMenuVisibilityListener, PhotoViewCallbacks,
         PhotoViewController.PhotoViewControllerCallbacks {
@@ -164,7 +166,6 @@ public class PhotoViewActivity extends FragmentActivity implements
     private long mEnterFullScreenDelayTime;
 
     private PhotoViewController mController;
-
 
     protected PhotoPagerAdapter createPhotoPagerAdapter(Context context,
             android.support.v4.app.FragmentManager fm, Cursor c, float maxScale) {
@@ -280,7 +281,7 @@ public class PhotoViewActivity extends FragmentActivity implements
         mEnterFullScreenDelayTime =
                 resources.getInteger(R.integer.reenter_fullscreen_delay_time_in_millis);
 
-        final ActionBar actionBar = getActionBar();
+        final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.addOnMenuVisibilityListener(this);
@@ -441,10 +442,10 @@ public class PhotoViewActivity extends FragmentActivity implements
                     final Uri currentPhotoUri;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                         currentPhotoUri = Uri.parse(mCurrentPhotoUri).buildUpon()
-                                .clearQuery().build();
+                            .clearQuery().build();
                     } else {
                         currentPhotoUri = Uri.parse(mCurrentPhotoUri).buildUpon()
-                                .query(null).build();
+                            .query(null).build();
                     }
                     while (data.moveToNext()) {
                         final String uriString = data.getString(uriIndex);
@@ -652,7 +653,7 @@ public class PhotoViewActivity extends FragmentActivity implements
                     getResources().getString(R.string.photo_view_count, position, mAlbumCount);
         }
 
-        setActionBarTitles(getActionBar());
+        setActionBarTitles(getSupportActionBar());
     }
 
     /**
@@ -1001,12 +1002,12 @@ public class PhotoViewActivity extends FragmentActivity implements
 
     @Override
     public void showActionBar() {
-        getActionBar().show();
+        getSupportActionBar().show();
     }
 
     @Override
     public void hideActionBar() {
-        getActionBar().hide();
+        getSupportActionBar().hide();
     }
 
     @Override
@@ -1050,7 +1051,7 @@ public class PhotoViewActivity extends FragmentActivity implements
         @Override
         public void onLoadFinished(Loader<BitmapResult> loader, BitmapResult result) {
             Drawable drawable = result.getDrawable(getResources());
-            final ActionBar actionBar = getActionBar();
+            final ActionBar actionBar = getSupportActionBar();
             switch (loader.getId()) {
                 case PhotoViewCallbacks.BITMAP_LOADER_THUMBNAIL:
                     // We just loaded the initial thumbnail that we can display

@@ -33,5 +33,14 @@ public interface PhotoBitmapLoaderInterface {
 
             return drawableToReturn;
         }
+
+        @Override
+        public String toString() {
+            return "BitmapResult{" +
+                    "drawable=" + drawable +
+                    ", bitmap=" + bitmap +
+                    ", status=" + status +
+                    '}';
+        }
     }
 }
